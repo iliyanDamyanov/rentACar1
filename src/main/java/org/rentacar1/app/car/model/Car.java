@@ -26,8 +26,12 @@ public class Car {
     @Column(nullable = false)
     private String brand;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private BigDecimal pricePerDay;
+    private CarType type;
+
+    @Column(nullable = false)
+    private BigDecimal pricePerWeek;
 
     @Column(nullable = false)
     private boolean available;

@@ -1,31 +1,34 @@
 package org.rentacar1.app.rent.model;
 
+import jakarta.persistence.*;
+import lombok.*;
 import org.rentacar1.app.car.model.Car;
 import org.rentacar1.app.user.model.User;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Setter
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "rents")
 public class Rent {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
-    private LocalDate startDate;
+    @Enumerated(EnumType.STRING)
+    private RentStatus status;
 
     @Column(nullable = false)
-    private LocalDate endDate;
+    @Enumerated(EnumType.STRING)
+    private RentPeriod period;
 
     @Column(nullable = false)
     private BigDecimal totalPrice;
@@ -37,4 +40,13 @@ public class Rent {
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
+
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    @Column(nullable = false)
+    private LocalDateTime createdOn;
+
+    @Column(nullable = false)
+    LocalDateTime completedOn;
 }

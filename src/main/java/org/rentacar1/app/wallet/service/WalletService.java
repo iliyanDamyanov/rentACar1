@@ -46,17 +46,6 @@ public class WalletService {
         return walletRepository.findById(id).orElseThrow(() -> new RuntimeException("Wallet not found"));
     }
 
-    public Wallet save(Wallet wallet) {
-        return walletRepository.save(wallet);
-    }
-
-    public Wallet update(Wallet wallet) {
-        return walletRepository.save(wallet);
-    }
-
-    public void deleteWallet(UUID id) {
-        walletRepository.deleteById(id);
-    }
 
     public void addFunds(UUID walletId, BigDecimal amount) {
         Wallet wallet = getWalletById(walletId);

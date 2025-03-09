@@ -1,14 +1,20 @@
 package org.rentacar1.app.car.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.rentacar1.app.car.model.Car;
 import org.rentacar1.app.car.repository.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Slf4j
+@Service
 public class CarService {
     private final CarRepository carRepository;
 
+    @Autowired
     public CarService(CarRepository carRepository) {
 
         this.carRepository = carRepository;

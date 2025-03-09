@@ -10,6 +10,7 @@ import org.rentacar1.app.rent.model.RentStatus;
 import org.rentacar1.app.rent.repository.RentRepository;
 import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class RentService {
     private final UserRepository userRepository;
     private final CarRepository carRepository;
 
+    @Autowired
     public RentService(RentRepository rentRepository, UserRepository userRepository, CarRepository carRepository) {
 
         this.rentRepository = rentRepository;

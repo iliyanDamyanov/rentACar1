@@ -1,16 +1,17 @@
 package org.rentacar1.app.transaction.model;
 
-import org.rentacar1.app.wallet.model.Wallet;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.rentacar1.app.user.model.User;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.UUID;
 
-@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,11 +23,37 @@ public class Transaction {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
-    private BigDecimal amount;
-    private TransactionType type; // DEPOSIT, WITHDRAWAL, PAYMENT
-    private LocalDate date;
+    private User owner;
 
+    @Column(nullable = false)
+    private String sender;
+
+    @Column(nullable = false)
+    private String receiver;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
+
+    @Column(nullable = false)
+    private BigDecimal balanceLeft;
+
+    @Column(nullable = false)
+    private Currency currency;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
+
+    @Column(nullable = false)
+    private String description;
+
+    private String failureReason;
+
+    @Column(nullable = false)
+    private LocalDateTime createdOn;
 
 }

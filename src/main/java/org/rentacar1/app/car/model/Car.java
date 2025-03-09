@@ -1,5 +1,6 @@
 package org.rentacar1.app.car.model;
 
+import lombok.Builder;
 import org.rentacar1.app.rent.model.Rent;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

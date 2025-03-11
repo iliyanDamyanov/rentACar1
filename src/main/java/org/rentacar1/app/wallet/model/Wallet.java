@@ -2,13 +2,11 @@ package org.rentacar1.app.wallet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.rentacar1.app.transaction.model.Transaction;
 import org.rentacar1.app.user.model.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.List;
 import java.util.UUID;
 @Builder
 @Entity
@@ -33,8 +31,6 @@ public class Wallet {
     @Column(nullable = false)
     private Currency currency;
 
-    @OneToMany(mappedBy = "wallet")
-    private List<Transaction> transactions;
 
     @Column(nullable = false)
     private LocalDateTime createdOn;

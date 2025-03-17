@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Rent a Car</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<form class="form" th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
+
+    <h3>Login Here</h3>
+
+    <label for="username">Username</label>
+    <input type="text" placeholder="Username" id="username" th:field="*{username}" required>
+
+    <label for="password">Password</label>
+    <input type="password" placeholder="Password" id="password" th:field="*{password}" required>
+    <p class="alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+    <button type="submit">Log In</button>
+
+    <p class="form-already">Don't have an account? <a href="/register">Register now</a>!</p>
+
+</form>
+
+</section>
+</main>
+<th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>
+</body>
+</html>

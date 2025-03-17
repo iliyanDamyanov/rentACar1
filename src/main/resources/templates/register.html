@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Rent a Car</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Register to Rent a Car</h1>
+</header>
+
+<section>
+    <form th:action="@{/register}" method="post" th:object="${registerRequest}">
+
+        <!-- Username -->
+        <div>
+            <label>Username:</label>
+            <input type="text" th:field="*{userName}" placeholder="Enter username" required/>
+            <div th:if="${#fields.hasErrors('userName')}" style="color:red;">
+                <p th:errors="*{userName}">Username Error</p>
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div>
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" placeholder="Enter email" required/>
+            <div th:if="${#fields.hasErrors('email')}" style="color:red;">
+                <p th:errors="*{email}">Email Error</p>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+            <label>Password:</label>
+            <input type="password" th:field="*{password}" placeholder="Enter password" required/>
+            <div th:if="${#fields.hasErrors('password')}" style="color:red;">
+                <p th:errors="*{password}">Password Error</p>
+            </div>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+</section>
+
+<footer>
+    <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

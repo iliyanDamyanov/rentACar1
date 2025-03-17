@@ -1,7 +1,7 @@
 package org.rentacar1.app.user.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.rentacar1.app.exeptions.DomainExeption;
+import org.rentacar1.app.exeptions.UsernameAlreadyExistException;
 import org.rentacar1.app.rent.service.RentService;
 import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.model.UserRole;
@@ -37,7 +37,7 @@ public class UserService {
 
         Optional<User> userOptional = userRepository.findByUsername(registerRequest.getUserName());
         if (userOptional.isPresent()) {
-            throw new DomainExeption("User name %s already exist".formatted(registerRequest.getUserName()));
+            throw new UsernameAlreadyExistException("Username [%s] already exist.".formatted(registerRequest.getUserName()));
         }
 
         User user = userRepository.save(initilizeUser(registerRequest));

@@ -16,14 +16,14 @@
 
         <!-- Username -->
         <div>
-            <label>Username:</label>
-            <input type="text" th:field="*{username}" id="username" placeholder="Enter username" required/>
+            <label for="username">Username:</label>
+            <input type="text" placeholder="Username" id="username"  th:field="*{username}"required/>
         </div>
 
         <!-- Password -->
         <div>
-            <label>Password:</label>
-            <input type="password" th:field="*{password}" id="password" placeholder="Enter password" required/>
+            <label for="password">Password:</label>
+            <input type="password" placeholder="Password"  id="password" th:field="*{password}" required/>
         </div>
 
         <button type="submit">Login</button>

@@ -24,6 +24,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RentService rentService;
@@ -68,9 +69,9 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainExeption("User with this username does not exist."));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainExeption("User with this username does not exist"));
 
-        return new AuthenticationMetadata(user.getId(), user.getUsername(), user.getPassword(), user.getRole(), user.isActive());
+        return new AuthenticationMetadata(user.getId(),username,user.getPassword(),user.getRole(),user.isActive());
     }
 
     public User getById(UUID id) {

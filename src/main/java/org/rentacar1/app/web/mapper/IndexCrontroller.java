@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -54,14 +53,11 @@ public class IndexCrontroller {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam) {
+    public ModelAndView getLoginPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login"); // Използваме viewName login за login.html
         modelAndView.addObject("loginRequest", new LoginRequest());
 
-        if (errorParam != null) {
-            modelAndView.addObject("errorMessage", "Incorrect username or password!");
-        }
 
         return modelAndView;
     }

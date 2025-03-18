@@ -1,10 +1,13 @@
 package org.rentacar1.app.web.mapper;
 
 import jakarta.validation.Valid;
+import org.rentacar1.app.security.AuthenticationMetadata;
+import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.service.UserService;
 import org.rentacar1.app.web.dto.LoginRequest;
 import org.rentacar1.app.web.dto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +62,18 @@ public class IndexCrontroller {
         if (errorParam != null) {
             modelAndView.addObject("errorMessage", "Incorrect username or password!");
         }
+
+        return modelAndView;
+    }
+
+    @GetMapping("/home")
+    public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }

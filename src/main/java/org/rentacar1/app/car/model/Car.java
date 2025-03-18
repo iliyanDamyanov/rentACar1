@@ -33,6 +33,9 @@ public class Car {
     private CarType type;
 
     @Column(nullable = false)
+    private String imgUrl;
+
+    @Column(nullable = false)
     private BigDecimal pricePerWeek;
 
     @Column(nullable = false)

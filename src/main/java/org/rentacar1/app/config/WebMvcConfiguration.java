@@ -8,12 +8,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
 @EnableMethodSecurity
 public class WebMvcConfiguration implements WebMvcConfigurer {
-
-
-
 
     // SecurityFilterChain - начин, по който Spring Security разбира как да се прилага за нашето приложение
     @Bean
@@ -32,9 +30,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-//                        .usernameParameter("username")
-//                        .passwordParameter("password")
-                        .defaultSuccessUrl("/home", true)
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/home")
                         .failureUrl("/login?error")
                         .permitAll())
                 .logout(logout -> logout
@@ -44,4 +42,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
         return http.build();
     }
+
+
 }

@@ -1,22 +1,29 @@
 package org.rentacar1.app.user.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.rentacar1.app.exeptions.DomainExeption;
 import org.rentacar1.app.exeptions.UsernameAlreadyExistException;
 import org.rentacar1.app.rent.service.RentService;
+import org.rentacar1.app.security.AuthenticationMetadata;
 import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.model.UserRole;
 import org.rentacar1.app.user.repository.UserRepository;
 import org.rentacar1.app.wallet.service.WalletService;
 import org.rentacar1.app.web.dto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
+
 @Slf4j
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RentService rentService;
@@ -58,4 +65,21 @@ public class UserService {
                 .updatedOn(LocalDateTime.now())
                 .build();
     }
-}
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainExeption("User with this username does not exist."));
+
+        return new AuthenticationMetadata(user.getId(), user.getUsername(), user.getPassword(), user.getRole(), user.isActive());
+    }
+
+    public User getById(UUID id) {
+
+        Optional<User> user = userRepository.findById(id);
+
+        user.orElseThrow(() -> new DomainExeption("User with id [%s] does not exist.".formatted(id)));
+
+        return user.get();
+    }
+
+    }

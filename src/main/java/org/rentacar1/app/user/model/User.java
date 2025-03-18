@@ -44,6 +44,8 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedOn;
 
+    private boolean isActive;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Wallet wallet;
 

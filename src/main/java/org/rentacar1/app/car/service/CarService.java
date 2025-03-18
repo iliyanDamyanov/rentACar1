@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -63,4 +64,7 @@ public class CarService {
     }
 
 
+    public List<Car> getAvailableCars() {
+        return carRepository.findByAvailableTrue(); // Връща само наличните коли
+    }
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Car Details - Rent a Car</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header>
+  <h1>Car Details</h1>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/cars">Cars</a></li>
+      <li><a href="/my-rents">My Rents</a></li>
+      <li><a href="/wallet">Wallet</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="car-details">
+  <img th:src="${car.imgUrl}" alt="Car Image" class="car-image"/>
+  <h2 th:text="${car.brand + ' ' + car.model}"></h2>
+  <p><strong>Type:</strong> <span th:text="${car.type}"></span></p>
+  <p><strong>Price per week:</strong> $<span th:text="${car.pricePerWeek}"></span></p>
+  <p><strong>Availability:</strong> <span th:text="${car.available ? 'Available' : 'Not Available'}"></span></p>
+
+  <!-- Бутон за наемане на колата -->
+  <a th:href="@{/rent/{id}(id=${car.id})}" class="rent-button">Rent this car</a>
+</section>
+
+
+</body>
+</html>

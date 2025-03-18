@@ -7,27 +7,41 @@
 </head>
 <body>
 
-<form class="form" th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
+<header>
+    <h1>Login to Rent a Car</h1>
+</header>
 
-    <h3>Login Here</h3>
+<section>
+    <form th:action="@{/login}" method="post" th:object="${loginRequest}">
 
-    <label for="username">Username</label>
-    <input type="text" placeholder="Username" id="username" th:field="*{username}" required>
+        <!-- Username -->
+        <div>
+            <label>Username:</label>
+            <input type="text" th:field="*{username}" id="username" placeholder="Enter username" required/>
+        </div>
 
-    <label for="password">Password</label>
-    <input type="password" placeholder="Password" id="password" th:field="*{password}" required>
-    <p class="alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+        <!-- Password -->
+        <div>
+            <label>Password:</label>
+            <input type="password" th:field="*{password}" id="password" placeholder="Enter password" required/>
+        </div>
 
-    <button type="submit">Log In</button>
+        <button type="submit">Login</button>
+    </form>
 
-    <p class="form-already">Don't have an account? <a href="/register">Register now</a>!</p>
+    <!-- Грешка при неправилен логин -->
+    <div th:if="${errorMessage}" style="color: red;">
+        <p th:text="${errorMessage}"></p>
+    </div>
 
-</form>
+    <!-- Линк към регистрация -->
+    <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
 
 </section>
-</main>
-<th:block th:insert="fragments/footer :: footer"></th:block>
-</body>
-</html>
+
+<footer>
+    <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
+
 </body>
 </html>

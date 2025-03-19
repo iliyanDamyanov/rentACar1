@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Rent a Car</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Rent a Car</h1>
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/cars">Cars</a></li>
+            <li><a href="/my-rents">My Rents</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/wallet">Wallet</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<section>
+    <h2>Explore our car rental services</h2>
+    <p>Choose from a wide variety of cars and start your journey today!</p>
+    <a href="/cars" class="explore-button">Explore Cars</a>
+</section>
+
+<footer>
+    <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

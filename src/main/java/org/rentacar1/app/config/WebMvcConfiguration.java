@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableMethodSecurity
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-    // SecurityFilterChain - начин, по който Spring Security разбира как да се прилага за нашето приложение
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -25,7 +24,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         http
                 .authorizeHttpRequests(matchers -> matchers
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/register", "/home").permitAll()
+                        .requestMatchers("/", "/register", "/home","/login","/css/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

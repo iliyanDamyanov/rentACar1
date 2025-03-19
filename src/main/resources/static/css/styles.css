@@ -246,3 +246,54 @@ footer {
 .details-button:hover {
     background: #0056b3;
 }
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    background: #007BFF;
+    border-radius: 5px;
+}
+
+nav ul li a:hover {
+    background: #0056b3;
+}
+
+.logout-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background: #c82333;
+}
+
+.explore-button {
+    display: inline-block;
+    padding: 15px 25px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.explore-button:hover {
+    background: #218838;
+}

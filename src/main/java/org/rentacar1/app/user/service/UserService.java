@@ -64,6 +64,7 @@ public class UserService implements UserDetailsService {
                 .role(UserRole.USER)
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
+                .isActive(true)
                 .build();
     }
 

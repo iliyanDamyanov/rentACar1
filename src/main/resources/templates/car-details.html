@@ -28,8 +28,21 @@
   <p><strong>Price per week:</strong> $<span th:text="${car.pricePerWeek}"></span></p>
   <p><strong>Availability:</strong> <span th:text="${car.available ? 'Available' : 'Not Available'}"></span></p>
 
-  <!-- Бутон за наемане на колата -->
-  <a th:href="@{/rent/{id}(id=${car.id})}" class="rent-button">Rent this car</a>
+  <!-- Форма за избор на период и наемане на кола -->
+  <form th:action="@{/rent/{id}(id=${car.id})}" method="post">
+    <label for="period">Choose Rental Period:</label>
+    <select id="period" name="period">
+      <option value="WEEKLY">1 Week</option>
+      <option value="MONTHLY">1 Month</option>
+      <option value="QUARTERLY">3 Months</option>
+      <option value="YEARLY">1 Year</option>
+    </select>
+    <button type="submit" class="rent-button" th:disabled="${!car.available}">Rent this car</button>
+  </form>
+
+  <div th:if="${param.error}">
+    <p class="error-message">Insufficient funds or car is already rented.</p>
+  </div>
 </section>
 
 

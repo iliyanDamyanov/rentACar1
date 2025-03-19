@@ -10,7 +10,10 @@ import org.rentacar1.app.rent.model.RentStatus;
 import org.rentacar1.app.rent.repository.RentRepository;
 import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.repository.UserRepository;
+import org.rentacar1.app.wallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,32 +26,48 @@ public class RentService {
     public final RentRepository rentRepository;
     private final UserRepository userRepository;
     private final CarRepository carRepository;
+    private final WalletService walletService;
 
     @Autowired
-    public RentService(RentRepository rentRepository, UserRepository userRepository, CarRepository carRepository) {
+    public RentService(RentRepository rentRepository, UserRepository userRepository, CarRepository carRepository,WalletService walletService) {
 
         this.rentRepository = rentRepository;
         this.userRepository = userRepository;
         this.carRepository = carRepository;
+        this.walletService = walletService;
     }
 
-    public Rent createRent(UUID userId, UUID carId, RentPeriod period) {
-
-        User user = userRepository.findById(userId)
+    public boolean rentCar(UUID carId, RentPeriod period) {
+        // Взимаме логнатия потребител
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // Взимаме колата по ID
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Car not found"));
 
+        // Проверка дали колата е налична
         if (!car.isAvailable()) {
-            throw new RuntimeException("Car is not available for rent");
+            log.warn("Car {} is already rented!", carId);
+            return false;
         }
 
         // Изчисляване на цената
-        BigDecimal basePrice = car.getPricePerWeek(); // Базова цена (седмична)
+        BigDecimal basePrice = car.getPricePerWeek();
         BigDecimal finalPrice = calculatePrice(basePrice, car.getType(), period);
 
-        // Създаване на Rent запис
+        // Проверка дали потребителят има достатъчно средства
+        if (!walletService.hasSufficientFunds(user, finalPrice)) {
+            log.warn("User {} does not have enough balance!", user.getUsername());
+            return false;
+        }
+
+        // Изваждане на парите от портфейла
+        walletService.deductAmount(user, finalPrice);
+
+        // Създаване на наем
         Rent rent = Rent.builder()
                 .user(user)
                 .car(car)
@@ -59,11 +78,13 @@ public class RentService {
                 .createdOn(LocalDateTime.now())
                 .build();
 
-        // Маркиране на колата като наета
+        // Маркиране на колата като заета
         car.setAvailable(false);
         carRepository.save(car);
+        rentRepository.save(rent);
 
-        return rentRepository.save(rent);
+        log.info("User {} successfully rented car {} for {}", user.getUsername(), carId, period);
+        return true;
     }
 
     private BigDecimal calculatePrice(BigDecimal basePrice, CarType carType, RentPeriod period) {
@@ -80,7 +101,4 @@ public class RentService {
 
         return basePrice.multiply(multiplier);
     }
-
-
-
 }

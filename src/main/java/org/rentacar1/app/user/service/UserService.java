@@ -10,6 +10,7 @@ import org.rentacar1.app.user.model.UserRole;
 import org.rentacar1.app.user.repository.UserRepository;
 import org.rentacar1.app.wallet.service.WalletService;
 import org.rentacar1.app.web.dto.RegisterRequest;
+import org.rentacar1.app.web.dto.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -84,4 +85,17 @@ public class UserService implements UserDetailsService {
         return user.get();
     }
 
+    public void updateProfile(UUID userId, UpdateProfileRequest updateProfileRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (updateProfileRequest.getEmail() != null) user.setEmail(updateProfileRequest.getEmail());
+        if (updateProfileRequest.getFirstName() != null) user.setFirstName(updateProfileRequest.getFirstName());
+        if (updateProfileRequest.getLastName() != null) user.setLastName(updateProfileRequest.getLastName());
+        if (updateProfileRequest.getPassword() != null && !updateProfileRequest.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(updateProfileRequest.getPassword()));
+        }
+
+        userRepository.save(user);
     }
+}

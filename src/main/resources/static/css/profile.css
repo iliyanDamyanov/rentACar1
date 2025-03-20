@@ -1,0 +1,15 @@
+.user-info, .edit-profile {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.user-info p, .edit-profile label {
+    margin: 10px 0;
+}
+
+hr {
+    margin: 20px 0;
+}

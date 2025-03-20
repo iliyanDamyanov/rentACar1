@@ -25,7 +25,7 @@ public class User {
 
     private String firstName;
 
-    private String lastname;
+    private String lastName;
 
     @Column(unique = true)
     private String email;
@@ -51,5 +51,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Rent> rents;
+
 
 }

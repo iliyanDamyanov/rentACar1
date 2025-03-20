@@ -1,6 +1,8 @@
 package org.rentacar1.app.web.mapper;
 
 import jakarta.validation.Valid;
+import org.rentacar1.app.car.model.Car;
+import org.rentacar1.app.car.service.CarService;
 import org.rentacar1.app.security.AuthenticationMetadata;
 import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.service.UserService;
@@ -14,19 +16,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 public class IndexCrontroller {
 
     private final UserService userService;
+    private final CarService carService;
+
     @Autowired
-    public IndexCrontroller(UserService userService) {
+    public IndexCrontroller(UserService userService, CarService carService) {
         this.userService = userService;
+        this.carService = carService;
     }
 
     @GetMapping("/")
-    public String indexPage() {
+    public ModelAndView indexPage() {
 
-        return "index";
+        ModelAndView modelAndView = new ModelAndView("index");
+        List <Car> availableCars = carService.getAvailableCars();
+        modelAndView.addObject("availableCars", availableCars);
+
+
+        return modelAndView;
     }
 
 

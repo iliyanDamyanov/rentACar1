@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Home - Rent a Car</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
 
 <header>
-    <h1>Welcome to Rent a Car</h1>
+    <h1 th:text="'Welcome, ' + ${user.username} + '!'">Welcome!</h1>
     <nav>
         <ul>
             <li><a href="/home">Home</a></li>
@@ -18,7 +19,7 @@
             <li><a href="/wallet">Wallet</a></li>
             <li><a href="/contact">Contact</a></li>
             <li>
-                <form th:action="@{/logout}" method="post" style="display:inline;">
+                <form th:action="@{/logout}" method="post" class="logout-form">
                     <button type="submit" class="logout-button">Logout</button>
                 </form>
             </li>
@@ -26,11 +27,13 @@
     </nav>
 </header>
 
-<section>
-    <h2>Explore our car rental services</h2>
-    <p>Choose from a wide variety of cars and start your journey today!</p>
-    <a href="/cars" class="explore-button">Explore Cars</a>
-</section>
+<main>
+    <section class="home-content">
+        <h2>Explore our car rental services</h2>
+        <p>Choose from a wide variety of cars and start your journey today!</p>
+        <a href="/cars" class="explore-button">Explore Cars</a>
+    </section>
+</main>
 
 <footer>
     <p>&copy; 2025 Rent a Car. All rights reserved.</p>

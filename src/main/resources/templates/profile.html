@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile - Rent a Car</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+
+<header>
+    <h1>Profile</h1>
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/cars">Cars</a></li>
+            <li><a href="/my-rents">My Rents</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/wallet">Wallet</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+<section>
+    <!-- User Information Section -->
+    <div class="user-info">
+        <h2>Your Profile Information</h2>
+        <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+        <p><strong>First Name:</strong> <span th:text="${user.firstName}"></span></p>
+        <p><strong>Last Name:</strong> <span th:text="${user.lastName}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
+        <p><strong>Created On:</strong> <span th:text="${user.createdOn}"></span></p>
+        <p><strong>Active:</strong> <span th:text="${user.active ? 'Yes' : 'No'}"></span></p>
+    </div>
+
+    <hr>
+
+    <!-- Edit Profile Section -->
+    <div class="edit-profile">
+        <h2>Edit Profile</h2>
+        <form th:action="@{/profile}" th:object="${updateProfileRequest}" method="post">
+
+            <label>First Name:</label>
+            <input type="text" th:field="*{firstName}" />
+
+            <label>Last Name:</label>
+            <input type="text" th:field="*{lastName}" />
+
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" />
+
+            <label>New Password:</label>
+            <input type="password" th:field="*{password}" />
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+</section>
+    </main>
+
+
+
+</body>
+</html>

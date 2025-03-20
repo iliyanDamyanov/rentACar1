@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Rents - Rent a Car</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/my-rents.css">
+</head>
+<body>
+
+<header>
+    <h1>Your Rental History</h1>
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/cars">Cars</a></li>
+            <li><a href="/my-rents">My Rents</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/wallet">Wallet</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section>
+    <h2>Your Rents</h2>
+    <div th:if="${rents.isEmpty()}">
+        <p>You have not rented any cars yet.</p>
+    </div>
+
+    <div th:each="rent : ${rents}">
+        <div class="rent-item">
+            <h3 th:text="${rent.car.brand} + ' ' + ${rent.car.model}"></h3>
+            <p>Price: $<span th:text="${rent.totalPrice}"></span></p>
+            <p>Status: <span th:text="${rent.status}"></span></p>
+            <p>Rented On: <span th:text="${rent.createdOn}"></span></p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

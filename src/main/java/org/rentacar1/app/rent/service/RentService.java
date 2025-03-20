@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -100,5 +101,12 @@ public class RentService {
         }
 
         return basePrice.multiply(multiplier);
+    }
+
+    public List<Rent> getUserRents(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+
+        return rentRepository.findByUser(user);
     }
 }

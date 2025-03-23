@@ -76,7 +76,8 @@ public class RentService {
                 .period(period)
                 .price(finalPrice)
                 .totalPrice(finalPrice)
-                .createdOn(LocalDateTime.now())
+                .createdOn(LocalDateTime.now())  // Добавяме текущата дата и час за createdOn
+                .completedOn(null)
                 .build();
 
         // Маркиране на колата като заета
@@ -109,4 +110,5 @@ public class RentService {
 
         return rentRepository.findByUser(user);
     }
+
 }

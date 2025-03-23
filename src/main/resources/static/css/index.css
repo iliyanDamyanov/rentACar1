@@ -3,8 +3,10 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
 }
 
+/* Бутон за разглеждане на колите */
 .explore-button {
     display: inline-block;
     padding: 10px 20px;
@@ -18,4 +20,61 @@
 
 .explore-button:hover {
     background-color: #0056b3;
+}
+
+/* Списъкът с коли - подравнен централно */
+.car-list {
+    display: flex;
+    justify-content: center; /* Центриране хоризонтално */
+    flex-wrap: wrap; /* Позволява пренасяне на нов ред ако няма място */
+    gap: 20px; /* Разстояние между колите */
+    margin-top: 20px;
+}
+
+/* Всяка кола като каре */
+.car-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Ефект при посочване */
+.car-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Стилизация на снимките */
+.car-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Заглавие на всяка кола */
+.car-item h3 {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+/* Детайли за колата */
+.car-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Футър стил */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
 }

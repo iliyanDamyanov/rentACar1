@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/contact.css">
+</head>
+<body>
+<header>
+    <h1>Contact Us</h1>
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/cars">Cars</a></li>
+            <li><a href="/my-rents">My Rents</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/wallet">Wallet</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="contact-container">
+        <form th:action="@{/contact}" method="post">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
+</body>
+</html>

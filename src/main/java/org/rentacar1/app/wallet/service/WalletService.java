@@ -56,10 +56,11 @@ public class WalletService {
     /**
      * Добавя средства към портфейла.
      */
-    public void addFunds(UUID walletId, BigDecimal amount) {
-        Wallet wallet = getWalletById(walletId);
+    public void addFunds(UUID userId, BigDecimal amount) {
+        Wallet wallet = walletRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Wallet not found"));
+
         wallet.setBalance(wallet.getBalance().add(amount));
-        wallet.setUpdatedOn(LocalDateTime.now());
         walletRepository.save(wallet);
     }
 
@@ -96,5 +97,11 @@ public class WalletService {
         wallet.setBalance(wallet.getBalance().subtract(amount));
         wallet.setUpdatedOn(LocalDateTime.now());
         walletRepository.save(wallet);
+    }
+
+
+    public Wallet getWalletByUserId(UUID userId) {
+        return walletRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Wallet not found for user with ID: " + userId));
     }
 }

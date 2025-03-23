@@ -31,14 +31,14 @@
 
   <!-- Форма за избор на период и наемане на кола -->
   <form th:action="@{/rent/{id}(id=${car.id})}" method="post">
-    <label for="period">Choose Rental Period:</label>
-    <select id="period" name="period">
-      <option value="WEEKLY">1 Week</option>
-      <option value="MONTHLY">1 Month</option>
-      <option value="QUARTERLY">3 Months</option>
-      <option value="YEARLY">1 Year</option>
+    <label for="period">Select Rent Period:</label>
+    <select name="period" id="period" required>
+      <option value="WEEKLY">Weekly</option>
+      <option value="MONTHLY">Monthly</option>
+      <option value="QUARTERLY">Quarterly</option>
+      <option value="YEARLY">Yearly</option>
     </select>
-    <button type="submit" class="rent-button" th:disabled="${!car.available}">Rent this car</button>
+    <button type="submit" class="rent-button">Rent this car</button>
   </form>
 
   <div th:if="${param.error}">

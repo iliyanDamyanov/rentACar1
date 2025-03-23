@@ -1,39 +1,115 @@
-form {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
 }
 
-form div {
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.login-form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.login-form div {
     margin-bottom: 15px;
 }
 
-form label {
+.login-form label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
+    text-align: left;
 }
 
-form input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-}
-
-form button {
+.login-form input {
     width: 100%;
     padding: 10px;
-    background-color: #007BFF;
-    border: none;
-    color: white;
-    font-weight: bold;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    cursor: pointer;
 }
 
-form button:hover {
+.login-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.login-form button:hover {
     background-color: #0056b3;
+}
+
+.login-form p {
+    margin-top: 15px;
+}
+
+.error-message p {
+    color: red;
+    font-weight: bold;
+}
+
+.register-form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.register-form div {
+    margin-bottom: 15px;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.register-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.register-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.register-form button:hover {
+    background-color: #0056b3;
+}
+
+.register-form p {
+    margin-top: 15px;
+}
+
+.error-message p {
+    color: red;
+    font-weight: bold;
 }

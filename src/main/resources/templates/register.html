@@ -13,39 +13,47 @@
 </header>
 
 <section>
-    <form th:action="@{/register}" method="post" th:object="${registerRequest}">
+    <div class="register-form">
+        <form th:action="@{/register}" method="post" th:object="${registerRequest}">
 
-        <!-- Username -->
-        <div>
-            <label>Username:</label>
-            <input type="text" th:field="*{userName}" placeholder="Enter username" required/>
-            <div th:if="${#fields.hasErrors('userName')}" style="color:red;">
-                <p th:errors="*{userName}">Username Error</p>
+            <!-- Съобщение за грешка при регистрация -->
+            <div th:if="${errorMessage != null}" class="error-message">
+                <p th:text="${errorMessage}"></p>
             </div>
-        </div>
 
-        <!-- Email -->
-        <div>
-            <label>Email:</label>
-            <input type="email" th:field="*{email}" placeholder="Enter email" required/>
-            <div th:if="${#fields.hasErrors('email')}" style="color:red;">
-                <p th:errors="*{email}">Email Error</p>
+            <!-- Username -->
+            <div>
+                <label>Username:</label>
+                <input type="text" th:field="*{userName}" placeholder="Enter username" required/>
+                <div th:if="${#fields.hasErrors('userName')}" class="error-message">
+                    <p th:errors="*{userName}"></p>
+                </div>
             </div>
-        </div>
 
-        <!-- Password -->
-        <div>
-            <label>Password:</label>
-            <input type="password" th:field="*{password}" placeholder="Enter password" required/>
-            <div th:if="${#fields.hasErrors('password')}" style="color:red;">
-                <p th:errors="*{password}">Password Error</p>
+            <!-- Email -->
+            <div>
+                <label>Email:</label>
+                <input type="email" th:field="*{email}" placeholder="Enter email" required/>
+                <div th:if="${#fields.hasErrors('email')}" class="error-message">
+                    <p th:errors="*{email}"></p>
+                </div>
             </div>
-        </div>
 
-        <button type="submit">Register</button>
-    </form>
+            <!-- Password -->
+            <div>
+                <label>Password:</label>
+                <input type="password" th:field="*{password}" placeholder="Enter password" required/>
+                <div th:if="${#fields.hasErrors('password')}" class="error-message">
+                    <p th:errors="*{password}"></p>
+                </div>
+            </div>
 
-    <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+            <button type="submit">Register</button>
+        </form>
+
+        <!-- Линк към логин страница -->
+        <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+    </div>
 </section>
 
 <footer>

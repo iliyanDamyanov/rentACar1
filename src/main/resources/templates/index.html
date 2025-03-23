@@ -19,19 +19,21 @@
 </header>
 
 <main>
-<section>
-    <h2>Available Cars</h2>
-    <div class="car-list">
-        <div th:each="car : ${availableCars}" class="car-item">
-            <h3 th:text="${car.brand} + ' ' + ${car.model}"></h3>
-            <img th:src="${car.imgUrl}" alt="Car Image" style="width:250px; height:auto;">
-            <p>Type: <span th:text="${car.type}"></span></p>
-            <p>Price per week: $<span th:text="${car.pricePerWeek}"></span></p>
+    <section>
+        <h2>Available Cars</h2>
+        <div class="car-list">
+            <div th:each="car : ${availableCars}" class="car-item">
+                <img th:src="${car.getImgUrl()}" alt="Car Image" class="car-image"/>
+                <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+                <p>Type: <span th:text="${car.type}"></span></p>
+                <p>Price per week: $<span th:text="${car.pricePerWeek}"></span></p>
+            </div>
         </div>
-    </div>
-</section>
-    </main>
+    </section>
+</main>
 
-
+<footer>
+    <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
 </body>
 </html>

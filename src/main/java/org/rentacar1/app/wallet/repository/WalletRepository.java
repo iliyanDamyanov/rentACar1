@@ -15,4 +15,5 @@ public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
     Optional<Wallet> findByUser(User user);
 
+    Optional<Wallet> findByUserId(UUID userId);
 }

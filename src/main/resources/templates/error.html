@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/error.css">
+</head>
+<body>
+<div class="error-container">
+    <h1>Error</h1>
+    <p th:text="${errorMessage}">An error occurred. Please try again.</p>
+    <a href="/home">Return to Home</a>
+</div>
+</body>
+</html>

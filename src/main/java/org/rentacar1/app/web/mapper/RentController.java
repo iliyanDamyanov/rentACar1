@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
 
@@ -23,13 +24,22 @@ public class RentController {
     }
 
     @PostMapping("/{carId}")
-    public String rentCar(@PathVariable UUID carId, @RequestParam RentPeriod period) {
-        boolean success = rentService.rentCar(carId, period);
+    public ModelAndView rentCar(@PathVariable UUID carId,
+                                @RequestParam RentPeriod period) {
+        try {
+            boolean success = rentService.rentCar(carId, period);
 
-        if (!success) {
-            return "redirect:/car-details/" + carId + "?error=insufficientFundsOrUnavailable";
+            if (success) {
+                return new ModelAndView("redirect:/my-rents");
+            } else {
+                ModelAndView modelAndView = new ModelAndView("error");
+                modelAndView.addObject("errorMessage", "Unable to rent the car. Insufficient funds or car is unavailable.");
+                return modelAndView;
+            }
+        } catch (Exception e) {
+            ModelAndView modelAndView = new ModelAndView("error");
+            modelAndView.addObject("errorMessage", e.getMessage());
+            return modelAndView;
         }
-
-        return "redirect:/my-rents";
     }
 }

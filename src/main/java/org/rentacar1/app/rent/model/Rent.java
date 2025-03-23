@@ -47,6 +47,6 @@ public class Rent {
     @Column(nullable = false)
     private LocalDateTime createdOn;
 
-    @Column(nullable = false)
-    LocalDateTime completedOn;
+    @Column(nullable = true)
+    private LocalDateTime completedOn;
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Wallet - Rent a Car</title>
+  <link rel="stylesheet" href="/css/wallet.css">
+</head>
+<body>
+<header>
+  <h1>Wallet</h1>
+  <nav>
+    <ul>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/cars">Cars</a></li>
+      <li><a href="/my-rents">My Rents</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li>
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" class="logout-button">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<section>
+  <div class="wallet-info">
+    <h2>Current Balance: €<span th:text="${wallet.balance}">0.00</span></h2>
+  </div>
+
+  <div class="add-funds">
+    <form th:action="@{/wallet/add}" method="post">
+      <label for="amountInput">Add Funds:</label>
+      <input type="number" id="amountInput" name="amount" step="0.01" min="0.01" required>
+      <button type="submit">Add Funds</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
+</body>
+</html>

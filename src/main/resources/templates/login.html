@@ -13,31 +13,31 @@
 </header>
 
 <section>
-    <form th:action="@{/login}" method="post" th:object="${loginRequest}">
-
-        <!-- Username -->
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" placeholder="Username" id="username"  th:field="*{username}"required/>
+    <div class="login-form">
+        <!-- Ако има грешка, тя ще се покаже тук -->
+        <div th:if="${errorMessage != null}" class="error-message">
+            <p th:text="${errorMessage}"></p>
         </div>
 
-        <!-- Password -->
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" placeholder="Password"  id="password" th:field="*{password}" required/>
-        </div>
+        <form th:action="@{/login}" method="post" th:object="${loginRequest}">
+            <!-- Username -->
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" placeholder="Username" id="username" th:field="*{username}" required/>
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
+            <!-- Password -->
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" placeholder="Password" id="password" th:field="*{password}" required/>
+            </div>
 
-    <!-- Грешка при неправилен логин -->
-    <div th:if="${errorMessage}" style="color: red;">
-        <p th:text="${errorMessage}"></p>
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Линк към регистрация -->
+        <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
     </div>
-
-    <!-- Линк към регистрация -->
-    <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
-
 </section>
 
 <footer>

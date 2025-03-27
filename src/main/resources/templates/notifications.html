@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications - Rent a Car</title>
+  <link rel="stylesheet" th:href="@{/css/notifications.css}">
+</head>
+<body>
+<header>
+  <h1>Notifications</h1>
+  <nav>
+    <ul>
+      <li><a th:href="@{/home}">Home</a></li>
+      <li><a th:href="@{/cars}">Cars</a></li>
+      <li><a th:href="@{/my-rents}">My Rents</a></li>
+      <li><a th:href="@{/wallet}">Wallet</a></li>
+      <li><a th:href="@{/profile}">Profile</a></li>
+      <li><a th:href="@{/notifications}" class="active">Notifications</a></li>
+      <li><a th:href="@{/contact}">Contact</a></li>
+      <li>
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" class="logout-button">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<section>
+  <div class="notifications-container">
+    <div id="notifications-list">
+      <div th:each="notification : ${notifications}" class="notification-card">
+        <p><strong>Message:</strong> <span th:text="${notification.message}"></span></p>
+        <p><strong>Recipient:</strong> <span th:text="${notification.recipient}"></span></p>
+        <p><strong>Date:</strong> <span th:text="${notification.createdAt}"></span></p>
+        <p><strong>Status:</strong>
+          <span th:if="${notification.read}">Read</span>
+          <span th:unless="${notification.read}">Unread</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Rent a Car. All rights reserved.</p>
+</footer>
+</body>
+</html>

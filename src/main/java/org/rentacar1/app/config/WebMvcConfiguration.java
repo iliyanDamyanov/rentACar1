@@ -21,9 +21,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         // .anyRequest() - всички заявки, които не съм изброил
         // .authenticated() - за да имаш достъп, трябва да си аутентикиран
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")  // Изключваме CSRF само за API пътищата
+                )
                 .authorizeHttpRequests(matchers -> matchers
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/register", "/home","/login","/css/**").permitAll()
+                        .requestMatchers("/", "/register", "/home", "/login", "/css/**").permitAll()
+                        .requestMatchers("/api/**").permitAll() // Позволява на всички да достъпват /api/**
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

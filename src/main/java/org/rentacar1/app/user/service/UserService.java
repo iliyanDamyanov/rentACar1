@@ -9,14 +9,17 @@ import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.model.UserRole;
 import org.rentacar1.app.user.repository.UserRepository;
 import org.rentacar1.app.wallet.service.WalletService;
+import org.rentacar1.app.web.dto.NotificationDTO;
 import org.rentacar1.app.web.dto.RegisterRequest;
 import org.rentacar1.app.web.dto.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -32,6 +35,9 @@ public class UserService implements UserDetailsService {
     private final WalletService walletService;
 
     @Autowired
+   private RestTemplate restTemplate;
+
+    @Autowired
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        RentService rentService,
@@ -41,7 +47,6 @@ public class UserService implements UserDetailsService {
         this.rentService = rentService;
         this.walletService = walletService;
     }
-
     public User register(RegisterRequest registerRequest) {
 
         Optional<User> userOptional = userRepository.findByUsername(registerRequest.getUserName());
@@ -51,10 +56,35 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.save(initilizeUser(registerRequest));
         walletService.createNewWallet(user);
-        log.info("Succesfuly creaatet new User acc username [%s] and id [%s]".formatted(user.getUsername(), user.getId()));
 
+        log.info("Successfully created new User account with username [%s] and id [%s]".formatted(user.getUsername(), user.getId()));
+
+        // 📌 Изпращане на нотификация към Notification Microservice
+        sendNotificationToMicroservice(user);
 
         return user;
+    }
+
+    private void sendNotificationToMicroservice(User user) {
+        String notificationUrl = "http://localhost:8081/api/notifications";  // Коригирано URL
+
+        NotificationDTO notificationDTO = new NotificationDTO(
+                user.getId(),
+                user.getUsername(),
+                "Регистрацията е успешна!"
+        );
+
+        try {
+            ResponseEntity<Void> response = restTemplate.postForEntity(notificationUrl, notificationDTO, Void.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                log.info("Successfully sent registration notification for user [{}]", user.getUsername());
+            } else {
+                log.error("Failed to send notification. Response code: {}", response.getStatusCode());
+            }
+        } catch (Exception e) {
+            log.error("Failed to send notification for user [{}]: {}", user.getUsername(), e.getMessage());
+        }
     }
 
     private User initilizeUser(RegisterRequest registerRequest) {

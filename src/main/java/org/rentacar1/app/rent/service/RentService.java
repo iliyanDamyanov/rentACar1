@@ -11,10 +11,12 @@ import org.rentacar1.app.rent.repository.RentRepository;
 import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.repository.UserRepository;
 import org.rentacar1.app.wallet.service.WalletService;
+import org.rentacar1.app.web.dto.NotificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -39,36 +41,36 @@ public class RentService {
     }
 
     public boolean rentCar(UUID carId, RentPeriod period) {
-        // Взимаме логнатия потребител
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Взимаме колата по ID
+
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Car not found"));
 
-        // Проверка дали колата е налична
+
         if (!car.isAvailable()) {
             log.warn("Car {} is already rented!", carId);
             return false;
         }
 
-        // Изчисляване на цената
+
         BigDecimal basePrice = car.getPricePerWeek();
         BigDecimal finalPrice = calculatePrice(basePrice, car.getType(), period);
 
-        // Проверка дали потребителят има достатъчно средства
+
         if (!walletService.hasSufficientFunds(user, finalPrice)) {
             log.warn("User {} does not have enough balance!", user.getUsername());
             return false;
         }
 
-        // Изваждане на парите от портфейла
+
         walletService.deductAmount(user, finalPrice);
 
-        // Създаване на наем
+
         Rent rent = Rent.builder()
                 .user(user)
                 .car(car)
@@ -76,11 +78,11 @@ public class RentService {
                 .period(period)
                 .price(finalPrice)
                 .totalPrice(finalPrice)
-                .createdOn(LocalDateTime.now())  // Добавяме текущата дата и час за createdOn
+                .createdOn(LocalDateTime.now())
                 .completedOn(null)
                 .build();
 
-        // Маркиране на колата като заета
+
         car.setAvailable(false);
         carRepository.save(car);
         rentRepository.save(rent);
@@ -98,7 +100,7 @@ public class RentService {
         };
 
         if (carType == CarType.BUS) {
-            basePrice = basePrice.multiply(BigDecimal.valueOf(1.3)); // +30% за автобуси
+            basePrice = basePrice.multiply(BigDecimal.valueOf(1.3));
         }
 
         return basePrice.multiply(multiplier);
@@ -109,6 +111,26 @@ public class RentService {
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
 
         return rentRepository.findByUser(user);
+    }
+
+    private void sendCarRentalNotification(User user, String carName) {
+        String notificationUrl = "http://localhost:8081/api/notifications";
+
+        NotificationDTO notificationDTO = new NotificationDTO(
+                user.getId(),
+                user.getUsername(),
+                "Успешно наемане на кола: " + carName,
+                false,
+                LocalDateTime.now()
+        );
+
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.postForEntity(notificationUrl, notificationDTO, Void.class);
+            log.info("Successfully sent car rental notification for user [{}]", user.getUsername());
+        } catch (Exception e) {
+            log.error("Failed to send car rental notification for user [{}]: {}", user.getUsername(), e.getMessage());
+        }
     }
 
 }

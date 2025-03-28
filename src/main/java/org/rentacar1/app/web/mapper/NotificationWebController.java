@@ -2,6 +2,9 @@ package org.rentacar1.app.web.mapper;
 
 import org.rentacar1.app.notification.model.Notification;
 import org.rentacar1.app.notification.service.NotificationService;
+import org.rentacar1.app.user.model.User;
+import org.rentacar1.app.user.service.UserService;
+import org.rentacar1.app.web.dto.NotificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,23 +22,39 @@ import java.util.UUID;
 public class NotificationWebController {
 
     private final NotificationService notificationService;
+    private final UserService userService;
 
     @Autowired
-    public NotificationWebController(NotificationService notificationService) {
+    public NotificationWebController(NotificationService notificationService, UserService userService) {
         this.notificationService = notificationService;
+        this.userService = userService;
     }
 
-    @GetMapping
-    public String viewNotifications(Model model) {
+    // 📌 Админ панел за показване на всички нотификации (само за Admin роля)
+    @GetMapping("/all")
+    public String viewAllNotifications(Model model) {
         List<Notification> notifications = notificationService.getAllNotifications();
         model.addAttribute("notifications", notifications);
-        return "notifications";
+        return "notifications";  // Thymeleaf страница за показване на всички нотификации
     }
 
+    // 📌 Показване на нотификациите само за текущия потребител (User роля)
+    @GetMapping
+    public String viewUserNotifications(Model model, Principal principal) {
+        User currentUser = userService.findByUsername(principal.getName());
+        UUID userId = currentUser.getId();
+
+        // Взимаме нотификациите от Notification Microservice
+        List<NotificationDTO> notifications = notificationService.getNotificationsForCurrentUser(userId);
+
+        model.addAttribute("notifications", notifications);
+        return "notifications";  // Thymeleaf страница за показване на нотификациите
+    }
+
+    // 📌 Изтриване на нотификация
     @PostMapping("/delete/{id}")
     public String deleteNotification(@PathVariable UUID id) {
         notificationService.deleteNotification(id);
         return "redirect:/notifications";
     }
-
 }

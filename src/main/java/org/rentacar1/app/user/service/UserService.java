@@ -13,7 +13,6 @@ import org.rentacar1.app.web.dto.NotificationDTO;
 import org.rentacar1.app.web.dto.RegisterRequest;
 import org.rentacar1.app.web.dto.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,17 +70,15 @@ public class UserService implements UserDetailsService {
         NotificationDTO notificationDTO = new NotificationDTO(
                 user.getId(),
                 user.getUsername(),
-                "Регистрацията е успешна!"
+                "Регистрацията е успешна!",
+                false,                  // Новото поле isRead - нотификацията е винаги непрочетена при създаване
+                LocalDateTime.now()      // Новото поле createdAt - текущото време при създаване на нотификацията
         );
 
         try {
-            ResponseEntity<Void> response = restTemplate.postForEntity(notificationUrl, notificationDTO, Void.class);
-
-            if (response.getStatusCode().is2xxSuccessful()) {
-                log.info("Successfully sent registration notification for user [{}]", user.getUsername());
-            } else {
-                log.error("Failed to send notification. Response code: {}", response.getStatusCode());
-            }
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.postForEntity(notificationUrl, notificationDTO, Void.class);
+            log.info("Successfully sent registration notification for user [{}]", user.getUsername());
         } catch (Exception e) {
             log.error("Failed to send notification for user [{}]: {}", user.getUsername(), e.getMessage());
         }

@@ -51,22 +51,6 @@ public class NotificationService {
         }
     }
 
-    public Notification getNotificationById(UUID id) {
-        try {
-            String url = NOTIFICATION_SERVICE_URL + "/" + id;
-            ResponseEntity<Notification> response = restTemplate.getForEntity(url, Notification.class);
-
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                return response.getBody();
-            } else {
-                System.err.println("Failed to fetch notification by ID. Status code: " + response.getStatusCode());
-                return null;
-            }
-        } catch (Exception e) {
-            System.err.println("Error while fetching notification by ID: " + e.getMessage());
-            return null;
-        }
-    }
 
     public void deleteNotification(UUID id) {
         try {

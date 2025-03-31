@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Home - Rent a Car</title>
@@ -19,8 +20,12 @@
             <li><a th:href="@{/profile}">Profile</a></li>
             <li><a th:href="@{/notifications}">Notifications</a></li>
             <li><a th:href="@{/contact}">Contact</a></li>
+
+            <li sec:authorize="hasRole('ROLE_ADMIN')">
+                <a th:href="@{/admin/users}">Admin Panel</a>
+            </li>
             <li>
-                <form th:action="@{/logout}" method="post" class="logout-form">
+                <form th:action="@{/logout}" method="post" style="display:inline;">
                     <button type="submit" class="logout-button">Logout</button>
                 </form>
             </li>

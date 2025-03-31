@@ -82,10 +82,16 @@ public class IndexCrontroller {
     @GetMapping("/home")
     public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        User user = userService.getById(authenticationMetadata.getUserId());
-
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
+
+        if (authenticationMetadata == null) {
+            // Ако потребителят не е автентикиран, го пренасочваме към страницата за логин
+            modelAndView.setViewName("redirect:/login");
+            return modelAndView;
+        }
+
+        User user = userService.getById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
 
         return modelAndView;

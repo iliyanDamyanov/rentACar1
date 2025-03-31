@@ -27,7 +27,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .authorizeHttpRequests(matchers -> matchers
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/register", "/home", "/login", "/css/**").permitAll()
-                        .requestMatchers("/api/**").permitAll() // Позволява на всички да достъпват /api/**
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")// Позволява на всички да достъпват /api/**
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

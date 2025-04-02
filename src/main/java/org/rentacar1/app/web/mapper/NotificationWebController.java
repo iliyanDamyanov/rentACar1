@@ -30,28 +30,28 @@ public class NotificationWebController {
         this.userService = userService;
     }
 
-    // 📌 Админ панел за показване на всички нотификации (само за Admin роля)
+
     @GetMapping("/all")
     public String viewAllNotifications(Model model) {
         List<Notification> notifications = notificationService.getAllNotifications();
         model.addAttribute("notifications", notifications);
-        return "notifications";  // Thymeleaf страница за показване на всички нотификации
+        return "notifications";
     }
 
-    // 📌 Показване на нотификациите само за текущия потребител (User роля)
+
     @GetMapping
     public String viewUserNotifications(Model model, Principal principal) {
         User currentUser = userService.findByUsername(principal.getName());
         UUID userId = currentUser.getId();
 
-        // Взимаме нотификациите от Notification Microservice
+
         List<NotificationDTO> notifications = notificationService.getNotificationsForCurrentUser(userId);
 
         model.addAttribute("notifications", notifications);
-        return "notifications";  // Thymeleaf страница за показване на нотификациите
+        return "notifications";
     }
 
-    // 📌 Изтриване на нотификация
+
     @PostMapping("/delete/{id}")
     public String deleteNotification(@PathVariable UUID id) {
         notificationService.deleteNotification(id);

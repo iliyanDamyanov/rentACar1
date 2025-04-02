@@ -20,13 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-public class IndexCrontroller {
+public class IndexController {
 
     private final UserService userService;
     private final CarService carService;
 
     @Autowired
-    public IndexCrontroller(UserService userService, CarService carService) {
+    public IndexController(UserService userService, CarService carService) {
         this.userService = userService;
         this.carService = carService;
     }

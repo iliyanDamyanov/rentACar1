@@ -38,6 +38,11 @@ public class WalletController {
 
     @PostMapping("/wallet/add")
     public String addFunds(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute("amount") BigDecimal amount) {
+
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+
         User user = userService.findByUsername(userDetails.getUsername());
         walletService.addFunds(user.getId(), amount);
 

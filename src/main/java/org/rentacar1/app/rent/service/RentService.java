@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.rentacar1.app.car.model.Car;
 import org.rentacar1.app.car.model.CarType;
 import org.rentacar1.app.car.repository.CarRepository;
+import org.rentacar1.app.notification.model.Notification;
+import org.rentacar1.app.notification.service.NotificationService;
 import org.rentacar1.app.rent.model.Rent;
 import org.rentacar1.app.rent.model.RentPeriod;
 import org.rentacar1.app.rent.model.RentStatus;
@@ -12,6 +14,7 @@ import org.rentacar1.app.user.model.User;
 import org.rentacar1.app.user.repository.UserRepository;
 import org.rentacar1.app.wallet.service.WalletService;
 import org.rentacar1.app.web.dto.NotificationDTO;
+import org.rentacar1.app.web.dto.RentViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,14 +33,16 @@ public class RentService {
     private final UserRepository userRepository;
     private final CarRepository carRepository;
     private final WalletService walletService;
+    private final NotificationService notificationService;
 
     @Autowired
-    public RentService(RentRepository rentRepository, UserRepository userRepository, CarRepository carRepository,WalletService walletService) {
+    public RentService(RentRepository rentRepository, UserRepository userRepository, CarRepository carRepository, WalletService walletService, NotificationService notificationService) {
 
         this.rentRepository = rentRepository;
         this.userRepository = userRepository;
         this.carRepository = carRepository;
         this.walletService = walletService;
+        this.notificationService = notificationService;
     }
 
     public boolean rentCar(UUID carId, RentPeriod period) {
@@ -87,6 +92,19 @@ public class RentService {
         carRepository.save(car);
         rentRepository.save(rent);
 
+        String formattedPrice = String.format("%.2f", finalPrice);
+        String message = "Successfully rented " + car.getModel() + " for $" + formattedPrice + ".";
+
+        Notification notification = Notification.builder()
+                .recipient(user.getUsername())
+                .message(message)
+                .createdAt(LocalDateTime.now())
+                .read(false)
+                .build();
+
+        notificationService.createNotification(notification);
+
+        notificationService.createNotification(notification);
         log.info("User {} successfully rented car {} for {}", user.getUsername(), carId, period);
         return true;
     }
@@ -106,11 +124,31 @@ public class RentService {
         return basePrice.multiply(multiplier);
     }
 
-    public List<Rent> getUserRents(String username) {
+    public List<RentViewDTO> getUserRentDTOs(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
 
-        return rentRepository.findByUser(user);
+        List<Rent> rents = rentRepository.findByUser(user);
+
+        return rents.stream()
+                .map(rent -> {
+                    LocalDateTime endDate = switch (rent.getPeriod()) {
+                        case WEEKLY -> rent.getCreatedOn().plusWeeks(1);
+                        case MONTHLY -> rent.getCreatedOn().plusMonths(1);
+                        case QUARTERLY -> rent.getCreatedOn().plusMonths(3);
+                        case YEARLY -> rent.getCreatedOn().plusYears(1);
+                    };
+
+                    return RentViewDTO.builder()
+                            .car(rent.getCar())
+                            .totalPrice(rent.getTotalPrice())
+                            .status(rent.getStatus())
+                            .period(rent.getPeriod())
+                            .createdOn(rent.getCreatedOn())
+                            .completedOn(rent.getCompletedOn())
+                            .endDate(endDate)
+                            .build();
+                }).toList();
     }
 
     private void sendCarRentalNotification(User user, String carName) {

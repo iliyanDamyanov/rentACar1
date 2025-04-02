@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +53,19 @@ public class AdminController {
     @PostMapping("/admin/update")
     public String updateUser(User user) {
         userRepository.save(user);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/admin/edit-user/{id}")
+    public String updateUserRole(@PathVariable UUID id,
+                                 @RequestParam("role") String newRole,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            userService.changeUserRole(id, newRole);
+            redirectAttributes.addFlashAttribute("successMessage", "Role updated successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to update role: " + e.getMessage());
+        }
         return "redirect:/admin/users";
     }
 

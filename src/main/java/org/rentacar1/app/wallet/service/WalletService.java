@@ -113,7 +113,7 @@ public class WalletService {
         NotificationDTO notificationDTO = new NotificationDTO(
                 user.getId(),
                 user.getUsername(),
-                "Успешно добавени " + amount + " лв. в портфейла.",
+                "Successfully added " + amount + "$ to your wallet.",
                 false,
                 LocalDateTime.now()
         );
@@ -133,7 +133,7 @@ public class WalletService {
         NotificationDTO notificationDTO = new NotificationDTO(
                 user.getId(),
                 user.getUsername(),
-                "Успешно изтеглени " + amount + " лв. от портфейла.",
+                "Successfully withdrawn " + amount + "$ from your wallet.",
                 false,
                 LocalDateTime.now()
         );

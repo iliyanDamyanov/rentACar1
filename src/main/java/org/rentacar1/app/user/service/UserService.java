@@ -129,4 +129,13 @@ public class UserService implements UserDetailsService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found with username: " + username));
     }
+
+    public void changeUserRole(UUID userId, String newRole) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        UserRole role = UserRole.valueOf(newRole); // newRole = "ADMIN" или "USER"
+        user.setRole(role);
+        userRepository.save(user);
+    }
 }

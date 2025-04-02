@@ -25,16 +25,26 @@
 
 <section>
     <h2>Your Rents</h2>
+
     <div th:if="${rents.isEmpty()}">
-        <p>You have not rented any cars yet.</p>
+        <p class="no-rents-message">You have not rented any cars yet.</p>
     </div>
 
-    <div th:each="rent : ${rents}">
-        <div class="rent-item">
-            <h3 th:text="${rent.car.brand} + ' ' + ${rent.car.model}"></h3>
-            <p>Price: $<span th:text="${rent.totalPrice}"></span></p>
-            <p>Status: <span th:text="${rent.status}"></span></p>
-            <p>Rented On: <span th:text="${rent.createdOn}"></span></p>
+    <div class="rents-list" th:if="${!rents.isEmpty()}">
+        <div class="rent-item" th:each="rent : ${rents}">
+            <h3 th:text="${rent.car.brand + ' ' + rent.car.model}">Car Model</h3>
+            <p>Price: $<span th:text="${rent.totalPrice}">0.00</span></p>
+            <p>Status: <span th:text="${rent.status}">ACTIVE</span></p>
+            <p>Period: <span th:text="${rent.period}">WEEK</span></p>
+            <p>Rented On: <span th:text="${#temporals.format(rent.createdOn, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+            <p th:if="${rent.completedOn != null}">
+                Returned On: <span th:text="${#temporals.format(rent.completedOn, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
+
+            <p th:if="${rent.completedOn == null}">
+                Ends On: <span th:text="${#temporals.format(rent.endDate, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
         </div>
     </div>
 </section>

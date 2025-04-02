@@ -1,7 +1,7 @@
 package org.rentacar1.app.web.mapper;
 
-import org.rentacar1.app.rent.model.Rent;
 import org.rentacar1.app.rent.service.RentService;
+import org.rentacar1.app.web.dto.RentViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +18,7 @@ public class MyRentsController {
 
     @Autowired
     public MyRentsController(RentService rentService) {
+
         this.rentService = rentService;
     }
 
@@ -26,10 +27,10 @@ public class MyRentsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        List<Rent> userRents = rentService.getUserRents(username);
+        List<RentViewDTO> rentDTOs = rentService.getUserRentDTOs(username);
 
         ModelAndView modelAndView = new ModelAndView("my-rents");
-        modelAndView.addObject("rents", userRents);
+        modelAndView.addObject("rents", rentDTOs);
 
         return modelAndView;
     }

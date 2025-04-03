@@ -23,7 +23,7 @@ public class UserProfileController {
 
     @GetMapping("/profile")
     public ModelAndView getProfilePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata){
-        User user = userService.getById(authenticationMetadata.getUserId()); // Извличаме User от базата
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         ModelAndView modelAndView = new ModelAndView("profile");
         modelAndView.addObject("user", user);

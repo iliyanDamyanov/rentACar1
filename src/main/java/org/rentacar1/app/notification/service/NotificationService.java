@@ -64,7 +64,7 @@ public class NotificationService {
 
 
     public List<NotificationDTO> getNotificationsForCurrentUser(UUID userId) {
-        String url = "http://localhost:8081/api/notifications/notifications/user/" + userId;  // Адресът за заявката
+        String url = "http://localhost:8081/api/notifications/notifications/user/" + userId;
 
         ResponseEntity<NotificationDTO[]> response = restTemplate.getForEntity(url, NotificationDTO[].class);
 

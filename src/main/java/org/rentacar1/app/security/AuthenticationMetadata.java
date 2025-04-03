@@ -27,11 +27,6 @@ public class AuthenticationMetadata implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        // hasRole("ADMIN") -> "ROLE_ADMIN"
-        // hasAuthority("ADMIN") -> "ADMIN"
-
-        // Permission: CAN_EDIT_USER_PROFILES
-
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.name());
 
         return List.of(authority);

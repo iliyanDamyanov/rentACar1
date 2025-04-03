@@ -65,6 +65,6 @@ public class CarService {
 
 
     public List<Car> getAvailableCars() {
-        return carRepository.findByAvailableTrue(); // Връща само наличните коли
+        return carRepository.findByAvailableTrue();
     }
 }

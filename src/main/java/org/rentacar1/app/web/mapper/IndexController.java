@@ -68,10 +68,10 @@ public class IndexController {
     @GetMapping("/login")
     public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login"); // Използваме viewName login за login.html
+        modelAndView.setViewName("login");
         modelAndView.addObject("loginRequest", new LoginRequest());
 
-        if (errorParam != null) { // Проверяваме дали има грешка при логин
+        if (errorParam != null) {
             modelAndView.addObject("errorMessage", "Incorrect username or password!"); // Подаваме съобщението към view-то
         }
 
@@ -86,7 +86,6 @@ public class IndexController {
         modelAndView.setViewName("home");
 
         if (authenticationMetadata == null) {
-            // Ако потребителят не е автентикиран, го пренасочваме към страницата за логин
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }

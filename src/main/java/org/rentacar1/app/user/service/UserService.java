@@ -58,7 +58,7 @@ public class UserService implements UserDetailsService {
 
         log.info("Successfully created new User account with username [%s] and id [%s]".formatted(user.getUsername(), user.getId()));
 
-        // 📌 Изпращане на нотификация към Notification Microservice
+
         sendNotificationToMicroservice(user);
 
         return user;
@@ -70,9 +70,9 @@ public class UserService implements UserDetailsService {
         NotificationDTO notificationDTO = new NotificationDTO(
                 user.getId(),
                 user.getUsername(),
-                "Регистрацията е успешна!",
-                false,                  // Новото поле isRead - нотификацията е винаги непрочетена при създаване
-                LocalDateTime.now()      // Новото поле createdAt - текущото време при създаване на нотификацията
+                "Registration is successful!",
+                false,
+                LocalDateTime.now()
         );
 
         try {
@@ -134,7 +134,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        UserRole role = UserRole.valueOf(newRole); // newRole = "ADMIN" или "USER"
+        UserRole role = UserRole.valueOf(newRole);
         user.setRole(role);
         userRepository.save(user);
     }

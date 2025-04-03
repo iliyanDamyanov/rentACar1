@@ -31,7 +31,7 @@ public class MyRentsControllerTest {
 
     @Test
     void getMyRentsPage_shouldReturnMyRentsViewWithUserRents() throws Exception {
-        // Arrange
+
         String username = "testUser";
 
         RentViewDTO rent = RentViewDTO.builder()

@@ -32,7 +32,7 @@ public class CarController {
     public String getCarDetails(@PathVariable UUID id, Model model) {
         Optional<Car> car = Optional.ofNullable(carService.getCarById(id));
         if (car.isEmpty()) {
-            return "redirect:/cars"; // Ако колата не съществува, връщаме потребителя към списъка с коли
+            return "redirect:/cars";
         }
         model.addAttribute("car", car.get());
         return "car-details";
